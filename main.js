@@ -1,66 +1,76 @@
-let gastos = [];
+document.addEventListener("DOMContentLoaded", function () {
+  cargarTabla();
 
-
-//Llamo a mostrarGastos apenas se carga la pagina.
-document.addEventListener("DOMContentLoaded", function() {
-  mostrarGastos(gastos);
+  // Limpiar el formulario al abrir el modal
+  const modalGasto = document.getElementById("modalGasto");
+  modalGasto.addEventListener("shown.bs.modal", function () {
+    document.getElementById("formGasto").reset();
+  });
 });
 
-const mostrarGastos = (gastos) => {
-  if (gastos.length > 0) {
-
-    for (let i = 0; i < gastos.length; i++) {
-      console.log(`Fecha: ${gastos[i].fecha}, Categoría: ${gastos[i].categoria}, Detalle: ${gastos[i].detalle}, Valor: $${gastos[i].valor}`);
-    }    
-
+// Carga datos del localStorage y los muestra en la tabla
+function cargarTabla() {
+  const tablaBody = document.getElementById("tabla-body");
+  const patrimonioTotalElement = document.getElementById("patrimonioTotal");
+  const datos = JSON.parse(localStorage.getItem("tablaDatos")) || [];
+  
+  // Limpiar tabla antes de cargar datos
+  tablaBody.innerHTML = "";
+  let patrimonioTotal = 0;
+  
+  if (datos.length === 0) {
+    // Si no hay datos cargados previamente se muestra una fila en color gris
+    const fila = document.createElement("tr");
+    fila.style.color = "#6c757d";
+    fila.innerHTML = `<td colspan="4" class="text-center">Aún no se han registrado gastos</td>`;
+    tablaBody.appendChild(fila);
   } else {
-    console.log("Aún no se ha ingresado ningún gasto. Ingrese un nuevo gasto tocando el botón en pantalla.");
+    // Mostrar filas con datos y calcular el patrimonio
+    datos.forEach((item) => {
+      const fila = document.createElement("tr");
+
+      // Asignar clases CSS segun el tipo de transaccion
+      if (item.transaccion === "Ingreso") {
+        fila.classList.add("fila-ingreso");
+        patrimonioTotal += item.monto;  // Aumentar patrimonio total si es Ingreso
+      } else if (item.transaccion === "Gasto") {
+        fila.classList.add("fila-gasto");
+        patrimonioTotal -= item.monto;  // Disminuir patrimonio total si es Gasto
+      }
+
+      fila.innerHTML = `
+        <td>${item.transaccion}</td>
+        <td>${item.detalle}</td>
+        <td>${item.monto.toFixed(2)}</td>
+        <td>${item.fecha}</td>
+      `;
+      tablaBody.appendChild(fila);
+    });
   }
+  patrimonioTotalElement.textContent = `Patrimonio Total: $${patrimonioTotal.toFixed(2)}`;
 }
 
+// Registrar un nuevo gasto o ingreso
+document.getElementById("formGasto").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-const unirCampos = (fecha,categoria,detalle,valor) => {
-  
-  let campos = {
-    fecha : fecha,
-    categoria: categoria,
-    detalle: detalle,
-    valor: valor
-  };
+  // Obtener valores del formulario
+  const transaccion = document.getElementById("inputTransaccion").value;
+  const detalle = document.getElementById("inputDetalle").value;
+  const monto = parseFloat(document.getElementById("inputMonto").value);
+  const fecha = document.getElementById("inputFecha").value;
 
-  return campos;  
-} 
+  // Crear nuevo gasto o ingreso
+  const nuevoGasto = { transaccion, detalle, monto, fecha };
 
-const registrarGasto = () => {
-  
-  console.log("Usted esta ingresando un nuevo gasto: "); 
-  
-  let fecha = prompt("Ingrese la fecha del gasto");
-  console.log("Fecha : "+fecha);
-  
-  let categoria = prompt("Asigna una categoría a tu gasto");
-  console.log("Categoría :"+categoria);
-  
-  let detalle = prompt("Ingresa el detalle del gasto");
-  console.log("Detalle: "+detalle);
-  
-  let valor = prompt("Ingresa el valor de tu gasto");
-  console.log("Valor :"+valor);
-  
-  const confirmarAdicion = confirm("Visualice los datos ingresados en la consola. ¿Confirma la creación del gasto?");  
-  
-  if (confirmarAdicion) {    
-    let nuevoGasto = unirCampos(fecha,categoria,detalle,valor);    
+  // Obtener datos existentes del localStorage
+  const datos = JSON.parse(localStorage.getItem("tablaDatos")) || [];
+  datos.push(nuevoGasto);
 
-    gastos.unshift(nuevoGasto);
+  // Guardar de nuevo en localStorage
+  localStorage.setItem("tablaDatos", JSON.stringify(datos));
 
-    console.log("Su gasto fue agregado correctamente");    
-
-    mostrarGastos(gastos);
-
-  }else{
-    console.log("Gasto NO AGREGADO.");
-    
-  }
-
-};
+  // Recargar tabla y cerrar modal
+  cargarTabla();
+  document.querySelector(".btn-close").click();
+});

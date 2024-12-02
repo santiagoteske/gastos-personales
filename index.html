@@ -1,63 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Simulador de Gastos</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <script src="main.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Gastos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>  
+  <div class="container-md mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalGasto">Registrar Gasto</button>
+      <span id="patrimonioTotal" class="h5">Patrimonio Total: $0.00</span>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Transacción</th>
+          <th>Detalle</th>
+          <th>Monto</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-body">
+        <!-- Filas dinámicas -->
+      </tbody>
+    </table>
+  </div>
 
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-    </head>
+  <!-- Ventana modal para registrar gasto -->
+  <div class="modal fade" id="modalGasto" tabindex="-1" aria-labelledby="modalGastoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalGastoLabel">Registrar Nuevo Gasto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formGasto">
+            <div class="mb-3">
+              <label for="inputTransaccion" class="form-label">Transacción</label>
+              <select class="form-select" id="inputTransaccion" required>
+                <option value="" disabled selected>Seleccione una opción</option>
+                <option value="Ingreso">Ingreso</option>
+                <option value="Gasto">Gasto</option>
+              </select>
+            </div>            
+            <div class="mb-3">
+              <label for="inputDetalle" class="form-label">Detalle</label>
+              <input type="text" class="form-control" id="inputDetalle" required>
+            </div>
+            <div class="mb-3">
+              <label for="inputMonto" class="form-label">Monto</label>
+              <input type="number" class="form-control" id="inputMonto" step="0.01" required>
+            </div>
+            <div class="mb-3">
+              <label for="inputFecha" class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="inputFecha" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <body>
-        <header>
-            <!-- place navbar here -->
-        </header>
-        <main>
-            <h1>Calculadora de Gastos</h1>
-            <br>
-            <p>
-                Bienvenido a este sencillo prototipo de calculadora de gastos. <br> 
-                Presiona F12 en tu navegador y accede a la Consola para ver las salidas en pantalla. <br>
-            </p>
-            <br>
-            <p>Haz click en el botón para comenzar  a registar tus gastos</p>
-
-            <a
-                name="btn-registrar"
-                id="btn-registrar"
-                class="btn btn-primary"
-                href="#"
-                role="button"
-                onclick="registrarGasto()"
-                >Registrar Gasto</a
-            >
-            
-        </main>
-        <footer>
-            <!-- place footer here -->
-        </footer>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
 </html>

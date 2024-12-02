@@ -1,0 +1,9 @@
+.container-md table tbody tr.fila-ingreso td {
+    background-color: #d4edda !important; /* Verde claro */
+    color: #155724 !important; /* Texto verde oscuro */
+  }
+
+.container-md table tbody tr.fila-gasto td {
+    background-color: #f8d7da !important; /* Rojo claro */
+    color: #721c24 !important; /* Texto rojo oscuro */
+  }
