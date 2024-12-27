@@ -1,0 +1,18 @@
+{
+  "gastos": [
+    {
+      "id": "2a50",
+      "transaccion": "Ingreso",
+      "detalle": "Hola platita",
+      "monto": 5000,
+      "fecha": "2024-11-29"
+    },
+    {
+      "id": "acbd",
+      "transaccion": "Gasto",
+      "detalle": "Chau platita",
+      "monto": 600,
+      "fecha": "2024-12-27"
+    }
+  ]
+}
